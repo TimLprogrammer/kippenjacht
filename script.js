@@ -1,16 +1,72 @@
+// Functie om secties in en uit te klappen
+function toggleSection(header) {
+    const content = header.nextElementSibling;
+    header.classList.toggle('collapsed');
+    content.classList.toggle('collapsed');
+}
+
 // Wacht tot het document volledig is geladen
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialiseer de kaart
-    const map = L.map('map-container').setView([52.1326, 5.2913], 7); // Standaard op Nederland gericht
+    // Initialiseer de checklist functionaliteit
+    initChecklist();
+    // Initialiseer de kaart met moderne opties
+    const map = L.map('map-container', {
+        zoomControl: false,  // We plaatsen de zoomknoppen op een andere plek
+        attributionControl: false  // We voegen attributie toe in een aangepaste stijl
+    }).setView([52.1326, 5.2913], 7); // Standaard op Nederland gericht
 
-    // Voeg de OpenStreetMap tile layer toe
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 19
+    // Optie 1: Kleurrijke kaartlaag (CartoDB - Voyager) - gedetailleerd en kleurrijk
+    const voyagerLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    });
+
+    // Optie 2: Moderne kaartlaag (CartoDB - Positron) - licht en modern
+    const positronLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    });
+
+    // Optie 3: Backup kaartlaag (OpenStreetMap - Mapnik) - altijd beschikbaar
+    const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    // Probeer eerst de kleurrijke laag
+    voyagerLayer.addTo(map);
+
+    // Fallback mechanisme voor als de eerste laag faalt
+    voyagerLayer.on('tileerror', function() {
+        console.log('Voyager layer failed, switching to Positron');
+        map.removeLayer(voyagerLayer);
+        positronLayer.addTo(map);
+
+        // Fallback mechanisme voor als de tweede laag ook faalt
+        positronLayer.on('tileerror', function() {
+            console.log('Positron layer failed, switching to OSM');
+            map.removeLayer(positronLayer);
+            osmLayer.addTo(map);
+        });
+    });
+
+    // Voeg zoomknoppen toe op een betere plek (rechtsboven)
+    L.control.zoom({
+        position: 'topright'
     }).addTo(map);
 
-    // Voeg een schaal toe aan de kaart
-    L.control.scale().addTo(map);
+    // Voeg een schaal toe aan de kaart in een moderne stijl
+    L.control.scale({
+        imperial: false,  // Alleen metrisch systeem
+        maxWidth: 200,
+        position: 'bottomright'
+    }).addTo(map);
+
+    // Voeg attributie toe in een aangepaste stijl
+    L.control.attribution({
+        position: 'bottomright',
+        prefix: 'FCC Kippenjacht 2025'
+    }).addTo(map);
 
     // Variabelen voor markers en gebieden
     let marker = null;
@@ -30,6 +86,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Verwijder bestaande markers en gebieden
         clearMapElements();
 
+        // Verberg eventuele eerdere foutmeldingen
+        updateInfo('', '');
+
         // Controleer of er coördinaten zijn ingevoerd
         if (!latitudeInput && !longitudeInput) {
             updateInfo('Voer ten minste één coördinaat in.', '');
@@ -40,8 +99,23 @@ document.addEventListener('DOMContentLoaded', function() {
         visualizeCoordinates(latitudeInput, longitudeInput);
     });
 
+    // Luister naar input events om foutmeldingen te verbergen wanneer de gebruiker begint te typen
+    document.getElementById('latitude').addEventListener('input', function() {
+        updateInfo('', '');
+    });
+
+    document.getElementById('longitude').addEventListener('input', function() {
+        updateInfo('', '');
+    });
+
     // Functie om coördinaten te visualiseren
     function visualizeCoordinates(latitudeInput, longitudeInput) {
+        // Controleer of er een decimaalpunt is gebruikt in de invoer
+        if ((latitudeInput && !latitudeInput.includes('.')) || (longitudeInput && !longitudeInput.includes('.'))) {
+            updateInfo('Waarschuwing: Je hebt geen decimaalpunt gebruikt in je coördinaten. Gebruik bijvoorbeeld 50.08 in plaats van 5008.', '');
+            return;
+        }
+
         // Bepaal de precisie van de ingevoerde coördinaten
         const latPrecision = getPrecision(latitudeInput);
         const lonPrecision = getPrecision(longitudeInput);
@@ -68,12 +142,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Bereken het bereik op basis van de precisie
             // Voor 9-cijferige coördinaten willen we het volledige bereik tonen
             const latStep = Math.pow(10, -latPrecision);
-            latRange = [lat, lat + latStep];
+            // Rond de ondergrens af naar beneden en de bovengrens naar boven
+            // om ervoor te zorgen dat het bereik correct is
+            const latLower = Math.floor(lat * Math.pow(10, latPrecision)) / Math.pow(10, latPrecision);
+            const latUpper = latLower + latStep;
+            latRange = [latLower, latUpper];
         }
 
         if (lon !== null) {
             const lonStep = Math.pow(10, -lonPrecision);
-            lonRange = [lon, lon + lonStep];
+            // Rond de ondergrens af naar beneden en de bovengrens naar boven
+            // om ervoor te zorgen dat het bereik correct is
+            const lonLower = Math.floor(lon * Math.pow(10, lonPrecision)) / Math.pow(10, lonPrecision);
+            const lonUpper = lonLower + lonStep;
+            lonRange = [lonLower, lonUpper];
         }
 
         // Update de informatie tekst
@@ -84,13 +166,31 @@ document.addEventListener('DOMContentLoaded', function() {
             // Beide coördinaten zijn ingevoerd
             if (latPrecision < 7 || lonPrecision < 7) {
                 // Onvolledige precisie (minder dan 9 cijfers), toon een gebied
-                visualizeArea(latRange, lonRange, latPrecision, lonPrecision);
+                visualizeArea(latRange, lonRange);
             } else {
-                // Volledige precisie (9 cijfers), toon een marker
-                marker = L.marker([lat, lon]).addTo(map);
+                // Volledige precisie (9 cijfers), toon een marker met aangepaste stijl
+                const chickenIcon = L.divIcon({
+                    html: '<div class="chicken-marker"><span>🐔</span></div>',
+                    className: '',
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 40]
+                });
 
-                // Voeg een popup toe met informatie
-                marker.bindPopup(`<b>Exacte locatie</b><br>Breedtegraad: ${lat}<br>Lengtegraad: ${lon}`).openPopup();
+                marker = L.marker([lat, lon], {
+                    icon: chickenIcon,
+                    riseOnHover: true
+                }).addTo(map);
+
+                // Voeg een popup toe met informatie in moderne stijl
+                marker.bindPopup(
+                    `<div class="modern-popup">
+                        <h4>Kippen gevonden!</h4>
+                    </div>`,
+                    {
+                        className: 'modern-popup-container',
+                        maxWidth: 300
+                    }
+                ).openPopup();
 
                 // Zoom naar de marker
                 map.setView([lat, lon], 15);
@@ -105,25 +205,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Functie om een gebied te visualiseren
-    function visualizeArea(latRange, lonRange, latPrecision, lonPrecision) {
+    function visualizeArea(latRange, lonRange) {
         // Maak een rechthoek op basis van de coördinaat bereiken
         const bounds = [
             [latRange[0], lonRange[0]], // zuidwest
             [latRange[1], lonRange[1]]  // noordoost
         ];
 
-        // Voeg de rechthoek toe aan de kaart
+        // Voeg de rechthoek toe aan de kaart met moderne stijl
         areaPolygon = L.rectangle(bounds, {
             color: "#3498db",
-            weight: 2,
-            fillOpacity: 0.3,
-            fillColor: "#3498db"
+            weight: 3,
+            fillOpacity: 0.2,
+            fillColor: "#3498db",
+            dashArray: '5, 5',  // Gestippelde lijn voor moderne look
+            smoothFactor: 1.5,  // Vloeiendere randen
+            interactive: true   // Zorgt ervoor dat de rechthoek interactief is
         }).addTo(map);
 
-        // Voeg een popup toe met informatie over het bereik
+        // Voeg een popup toe met informatie over het bereik in moderne stijl
         const popupContent = `
-            <div style="text-align: center;">
-                <h4 style="margin: 0 0 8px 0;">Het kippenhok</h4>
+            <div class="modern-popup">
+                <h4>Kippenhok</h4>
+                <p>De kippen bevinden zich ergens in dit gebied!</p>
             </div>
         `;
 
@@ -134,6 +238,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Voeg ook een popup toe aan de rechthoek zelf
         areaPolygon.bindPopup(popupContent);
+
+        // Voeg een kipicoon toe in het midden van het gebied
+        const centerLat = (latRange[0] + latRange[1]) / 2;
+        const centerLon = (lonRange[0] + lonRange[1]) / 2;
+
+        // Maak een kipicoon
+        const chickenIcon = L.divIcon({
+            html: '<div class="chicken-marker area-chicken"><span>🐔</span></div>',
+            className: '',
+            iconSize: [40, 40],
+            iconAnchor: [20, 40]
+        });
+
+        // Voeg de marker toe aan de kaart
+        marker = L.marker([centerLat, centerLon], {
+            icon: chickenIcon,
+            riseOnHover: true
+        }).addTo(map);
 
         // Zoom naar het gebied met wat padding
         map.fitBounds(bounds, { padding: [50, 50] });
@@ -158,10 +280,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Zoom naar een geschikte weergave
         map.setView([lat, 0], 2);
 
-        // Toon een popup met informatie
-        popup = L.popup()
+        // Toon een popup met informatie in moderne stijl
+        popup = L.popup({
+            className: 'modern-popup-container',
+            maxWidth: 300
+        })
             .setLatLng([lat, 0])
-            .setContent(`<div style="text-align: center;"><b>Breedtegraad:</b> ${lat}<br>Alle locaties met deze breedtegraad worden getoond.</div>`)
+            .setContent(`
+                <div class="modern-popup">
+                    <h4>Breedtegraad: ${lat}</h4>
+                    <p>Ergens op deze lijn zitten de kippentjes.</p>
+                </div>
+            `)
             .openOn(map);
     }
 
@@ -184,10 +314,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Zoom naar een geschikte weergave
         map.setView([0, lon], 2);
 
-        // Toon een popup met informatie
-        popup = L.popup()
+        // Toon een popup met informatie in moderne stijl
+        popup = L.popup({
+            className: 'modern-popup-container',
+            maxWidth: 300
+        })
             .setLatLng([0, lon])
-            .setContent(`<div style="text-align: center;"><b>Lengtegraad:</b> ${lon}<br>Alle locaties met deze lengtegraad worden getoond.</div>`)
+            .setContent(`
+                <div class="modern-popup">
+                    <h4>Lengtegraad: ${lon}</h4>
+                    <p>Ergens op deze lijn zitten de kippentjes.</p>
+                </div>
+            `)
             .openOn(map);
     }
 
@@ -203,40 +341,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Functie om de informatie tekst bij te werken
     function updateInfo(message, precisionInfo) {
-        document.getElementById('coordinate-info').textContent = message;
-        document.getElementById('precision-info').textContent = precisionInfo;
+        const errorContainer = document.getElementById('error-container');
+        const coordinateInfo = document.getElementById('coordinate-info');
+        const precisionInfoElement = document.getElementById('precision-info');
+
+        coordinateInfo.textContent = message;
+        precisionInfoElement.textContent = precisionInfo;
+
+        // Toon of verberg de foutmelding op basis van of er een bericht is
+        if (message) {
+            errorContainer.classList.add('visible');
+        } else {
+            errorContainer.classList.remove('visible');
+        }
     }
 
     // Functie om de informatie tekst bij te werken op basis van de invoer
-    function updateInfoBasedOnInput(lat, lon, latPrecision, lonPrecision, latRange, lonRange) {
-        let message = '';
-        let precisionInfo = '';
-
-        if (lat !== null && lon !== null) {
-            message = `Coördinaten: ${lat}, ${lon}`;
-
-            if (latPrecision < 7 || lonPrecision < 7) {
-                precisionInfo = 'Het gemarkeerde gebied toont alle mogelijke locaties waar de kippen zich kunnen bevinden.';
-
-                if (latPrecision < 7) {
-                    precisionInfo += ` Breedtegraad bereik: ${latRange[0].toFixed(latPrecision)} tot ${latRange[1].toFixed(latPrecision)}.`;
-                }
-
-                if (lonPrecision < 7) {
-                    precisionInfo += ` Lengtegraad bereik: ${lonRange[0].toFixed(lonPrecision)} tot ${lonRange[1].toFixed(lonPrecision)}.`;
-                }
-            } else {
-                precisionInfo = 'Volledige coördinaten gedetecteerd. De kippen zullen hier zijn.';
-            }
-        } else if (lat !== null) {
-            message = `Breedtegraad: ${lat}`;
-            precisionInfo = 'Alleen breedtegraad ingevoerd. De kippen bevinden zich op deze lijn.';
-        } else if (lon !== null) {
-            message = `Lengtegraad: ${lon}`;
-            precisionInfo = 'Alleen lengtegraad ingevoerd. De kippen bevinden zich op deze lijn.';
-        }
-
-        updateInfo(message, precisionInfo);
+    // Parameters worden niet gebruikt maar behouden voor compatibiliteit
+    function updateInfoBasedOnInput() {
+        // Laat de informatietekst leeg - we tonen geen extra informatie meer
+        updateInfo('', '');
     }
 
     // Functie om alle markers en gebieden van de kaart te verwijderen
@@ -264,6 +388,114 @@ document.addEventListener('DOMContentLoaded', function() {
         if (popup) {
             map.closePopup(popup);
             popup = null;
+        }
+    }
+
+    // Functie om de checklist functionaliteit te initialiseren
+    function initChecklist() {
+        // Verzamel alle checkboxes
+        const latCheckboxes = document.querySelectorAll('.task-checkbox[id^="lat-task"]');
+        const lonCheckboxes = document.querySelectorAll('.task-checkbox[id^="lon-task"]');
+        const latSpecial = document.getElementById('lat-special');
+        const lonSpecial = document.getElementById('lon-special');
+
+        // Voeg event listeners toe aan alle checkboxes
+        latCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateProgress);
+        });
+
+        lonCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateProgress);
+        });
+
+        latSpecial.addEventListener('change', updateProgress);
+        lonSpecial.addEventListener('change', updateProgress);
+
+        // Laad opgeslagen voortgang uit localStorage
+        loadProgress();
+
+        // Update de voortgangsbalken
+        updateProgress();
+
+        // Klap alle secties standaard in
+        const sectionHeaders = document.querySelectorAll('.section-header');
+        sectionHeaders.forEach(header => {
+            toggleSection(header); // Klap in bij het laden van de pagina
+        });
+    }
+
+    // Functie om de voortgang bij te werken
+    function updateProgress() {
+        // Tel het aantal voltooide taken
+        const latCheckboxes = document.querySelectorAll('.task-checkbox[id^="lat-task"]');
+        const lonCheckboxes = document.querySelectorAll('.task-checkbox[id^="lon-task"]');
+        const latSpecial = document.getElementById('lat-special');
+        const lonSpecial = document.getElementById('lon-special');
+
+        let latCompleted = 0;
+        let lonCompleted = 0;
+
+        // Tel normale opdrachten
+        latCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) latCompleted++;
+        });
+
+        lonCheckboxes.forEach(checkbox => {
+            if (checkbox.checked) lonCompleted++;
+        });
+
+        // Tel specials (tellen voor 2 coördinaten)
+        if (latSpecial.checked) latCompleted += 2;
+        if (lonSpecial.checked) lonCompleted += 2;
+
+        // Maximaal 9 coördinaten per type
+        latCompleted = Math.min(latCompleted, 9);
+        lonCompleted = Math.min(lonCompleted, 9);
+
+        // Update de voortgangsbalken
+        const latProgress = document.getElementById('lat-progress');
+        const lonProgress = document.getElementById('lon-progress');
+        const latCount = document.getElementById('lat-count');
+        const lonCount = document.getElementById('lon-count');
+
+        const latPercentage = (latCompleted / 9) * 100;
+        const lonPercentage = (lonCompleted / 9) * 100;
+
+        latProgress.style.width = `${latPercentage}%`;
+        lonProgress.style.width = `${lonPercentage}%`;
+
+        latCount.textContent = `${latCompleted}/9`;
+        lonCount.textContent = `${lonCompleted}/9`;
+
+        // Sla de voortgang op in localStorage
+        saveProgress();
+    }
+
+    // Functie om de voortgang op te slaan
+    function saveProgress() {
+        const checkboxes = document.querySelectorAll('.task-checkbox');
+        const progress = {};
+
+        checkboxes.forEach(checkbox => {
+            progress[checkbox.id] = checkbox.checked;
+        });
+
+        localStorage.setItem('kippenjacht-progress', JSON.stringify(progress));
+    }
+
+    // Functie om de voortgang te laden
+    function loadProgress() {
+        const savedProgress = localStorage.getItem('kippenjacht-progress');
+
+        if (savedProgress) {
+            const progress = JSON.parse(savedProgress);
+
+            Object.keys(progress).forEach(id => {
+                const checkbox = document.getElementById(id);
+                if (checkbox) {
+                    checkbox.checked = progress[id];
+                }
+            });
         }
     }
 });
