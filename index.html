@@ -153,11 +153,11 @@
             <form id="gpsForm">
                 <div class="form-group">
                     <label for="latitude">Breedtegraad:</label>
-                    <input type="text" id="latitude" name="latitude" placeholder="bijv. 50.0864306" autocomplete="off">
+                    <input type="tel" id="latitude" name="latitude" placeholder="bijv. 50.0864306" autocomplete="off" pattern="[0-9.]*" inputmode="decimal">
                 </div>
                 <div class="form-group">
                     <label for="longitude">Lengtegraad:</label>
-                    <input type="text" id="longitude" name="longitude" placeholder="bijv. 14.4201537" autocomplete="off">
+                    <input type="tel" id="longitude" name="longitude" placeholder="bijv. 14.4201537" autocomplete="off" pattern="[0-9.]*" inputmode="decimal">
                 </div>
                 <button type="submit" id="visualize-btn">Zoek de kip!</button>
             </form>
