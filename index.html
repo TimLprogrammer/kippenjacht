@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Coördinaten Visualisatie</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+    <!-- Leaflet.js script moet vóór onze eigen script worden geladen -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FCC KIPPENJACHT 2025</h1>
+        </header>
+
+        <div class="info-panel">
+            <h3>Beste kippen zoekers</h3>
+            <p id="coordinate-info">Jullie krijgen totaal 18 opdrachten (9 voor de breedtegraad en 9 voor de lengtegraad). Kies strategisch welke opdracht jullie gaan uitvoeren. 
+                Voor elke opdracht krijgen jullie 1 getal (op de juiste volgorde van de breedtegraad of lengtegraad) waar de kippen zitten te zuipen met jullie geld! <br> 
+                <br>Vul steeds de coördinaten in om het gebied te vinden waar de kippen zich bevinden. Bij elk getal die jullie invullen wordt het gebied kleiner. <br><br>
+                Willen jullie een kroeg gokken? Dan mag dat maar elk fout wordt gestraft met een adtje bij de kroeg zelf. Tweede keer gokken wordt 2 adjes etc. <br><br> Succes kippenjagers</p>
+            <p id="precision-info"></p>
+        </div>
+
+        <div class="coordinate-form">
+            <form id="gpsForm">
+                <div class="form-group">
+                    <label for="latitude">Breedtegraad:</label>
+                    <input type="text" id="latitude" name="latitude" placeholder="bijv. 50.0864306" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Lengtegraad:</label>
+                    <input type="text" id="longitude" name="longitude" placeholder="bijv. 14.4201537" autocomplete="off">
+                </div>
+                <button type="submit" id="visualize-btn">Visualiseren</button>
+            </form>
+        </div>
+
+        <div id="map-container"></div>
+
+        <div class="examples">
+            <h3>Voorbeelden:</h3>
+            <ul>
+                <li><strong>Volledig (9 cijfers):</strong> Breedtegraad: 50.0864306, Lengtegraad: 14.4201537</li>
+                <li><strong>Gedeeltelijk:</strong> Breedtegraad: 50.08, Lengtegraad: 14.42</li>
+                <li><strong>Alleen breedtegraad:</strong> Breedtegraad: 50.0864306</li>
+            </ul>
+            <p class="note">Bij onvolledige coördinaten wordt een box getoond waar de exacte 9-cijferige coördinaten zich kunnen bevinden.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
