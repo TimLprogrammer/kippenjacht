@@ -16,12 +16,136 @@
         </header>
 
         <div class="info-panel">
-            <h3>Beste kippen zoekers</h3>
-            <p id="coordinate-info">Jullie krijgen totaal 18 opdrachten (9 voor de breedtegraad en 9 voor de lengtegraad). Kies strategisch welke opdracht jullie gaan uitvoeren. 
-                Voor elke opdracht krijgen jullie 1 getal (op de juiste volgorde van de breedtegraad of lengtegraad) waar de kippen zitten te zuipen met jullie geld! <br> 
-                <br>Vul steeds de coördinaten in om het gebied te vinden waar de kippen zich bevinden. Bij elk getal die jullie invullen wordt het gebied kleiner. <br><br>
-                Willen jullie een kroeg gokken? Dan mag dat maar elk fout wordt gestraft met een adtje bij de kroeg zelf. Tweede keer gokken wordt 2 adjes etc. <br>P.S. valsspelen is gewoon gay<br><br> Succes kippenjagers</p>
-            <p id="precision-info"></p>
+            <h2>Regels</h2>
+            <p>Jullie krijgen totaal 18 opdrachten (9 voor de breedtegraad en 9 voor de lengtegraad). Kies strategisch welke opdracht jullie gaan uitvoeren.
+                Voor elke opdracht krijgen jullie 1 getal (op de juiste volgorde van de breedtegraad of lengtegraad). Hier zitten de kippen te zuipen van jullie geld! <br>
+                <br>Vul steeds de coördinaten in om het gebied te vinden waar de kippen zich bevinden. Bij elk getal dat jullie invullen wordt het gebied kleiner. <br><br>
+                Willen jullie een kroeg gokken? Dan mag dat, maar elke fout wordt gestraft met een adtje bij de kroeg zelf (per team). Tweede keer gokken wordt 2 adtjes etc. <br>P.S. valsspelen is gewoon gay<br><br> Succes kippenjagers</p>
+        </div>
+        <div class="checklist-container">
+            <h2>Zoek de kip - Opdrachten</h2>
+
+            <div class="checklist-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Breedtegraad</h3>
+                    <span class="toggle-icon">&#9660;</span>
+                </div>
+                <div class="section-content">
+                    <div class="special-task">
+                        <input type="checkbox" id="lat-special" class="task-checkbox">
+                        <label for="lat-special"><strong>Special voor 2 coördinaten:</strong> Bestel een drankje met enkel kipgeluiden.</label>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-1" class="task-checkbox">
+                            <label for="lat-task-1">1. Ga op de foto met een kip.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-2" class="task-checkbox">
+                            <label for="lat-task-2">2. Jongleer voor 10 seconden met 3 eieren.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-3" class="task-checkbox">
+                            <label for="lat-task-3">3. Adtje tegen random persoon winnen.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-4" class="task-checkbox">
+                            <label for="lat-task-4">4. Eet of drink een echt ei (paasei telt niet).</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-5" class="task-checkbox">
+                            <label for="lat-task-5">5. Vind een voetbal en kop 12 keer over met je team.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-6" class="task-checkbox">
+                            <label for="lat-task-6">6. Doe allemaal een succesvol adtje koprol (anders allemaal opnieuw).</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-7" class="task-checkbox">
+                            <label for="lat-task-7">7. Ga op de foto met een look-alike van Robbie de kip.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-8" class="task-checkbox">
+                            <label for="lat-task-8">8. Koop een drankje van exact 123 CZK.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-9" class="task-checkbox">
+                            <label for="lat-task-9">9. Tik iemand van het andere team (terug tikken mag niet).</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Lengtegraad</h3>
+                    <span class="toggle-icon">&#9660;</span>
+                </div>
+                <div class="section-content">
+                    <div class="special-task">
+                        <input type="checkbox" id="lon-special" class="task-checkbox">
+                        <label for="lon-special"><strong>Special voor 2 coördinaten:</strong> Laat een cartoon van je team schilderen/tekenen.</label>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-1" class="task-checkbox">
+                            <label for="lon-task-1">1. Ga op de foto met 5 senioren boven de 60 jaar.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-2" class="task-checkbox">
+                            <label for="lon-task-2">2. Bestel een bucket kip bij de KFC en smikkel hem op.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-3" class="task-checkbox">
+                            <label for="lon-task-3">3. Vind de haan op de Sint-Vitus kathedraal.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-4" class="task-checkbox">
+                            <label for="lon-task-4">4. Maak een foto van een Tsjechische vlag.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-5" class="task-checkbox">
+                            <label for="lon-task-5">5. Sta 2 minuten lang als een standbeeld met een ei boven je hoofd op een druk plein.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-6" class="task-checkbox">
+                            <label for="lon-task-6">6. Tap allemaal zelf een biertje en laat deze keuren, niet goed is opnieuw en uiteraard moet elk biertje genuttigd worden.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-7" class="task-checkbox">
+                            <label for="lon-task-7">7. Speel allemaal split de G, iedereen krijgt 1 kans. Als het bij 1 iemand lukt dan is de opdracht klaar, anders een ronde proberen.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-8" class="task-checkbox">
+                            <label for="lon-task-8">8. Koop en draag een kledingstuk met een plaatje van een kip erop.</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-9" class="task-checkbox">
+                            <label for="lon-task-9">9. Neem allemaal een typisch lokaal Praags shotje met de barman.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-tracker">
+                <h3>Voortgang:</h3>
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <span>Breedtegraad: </span>
+                        <div class="progress-bar">
+                            <div id="lat-progress" class="progress-fill"></div>
+                        </div>
+                        <span id="lat-count">0/9</span>
+                    </div>
+                    <div class="progress-item">
+                        <span>Lengtegraad: </span>
+                        <div class="progress-bar">
+                            <div id="lon-progress" class="progress-fill"></div>
+                        </div>
+                        <span id="lon-count">0/9</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="coordinate-form">
@@ -34,8 +158,12 @@
                     <label for="longitude">Lengtegraad:</label>
                     <input type="text" id="longitude" name="longitude" placeholder="bijv. 14.4201537" autocomplete="off">
                 </div>
-                <button type="submit" id="visualize-btn">Visualiseren</button>
+                <button type="submit" id="visualize-btn">Zoek de kip!</button>
             </form>
+            <div id="error-container" class="error-message">
+                <p id="coordinate-info"></p>
+                <p id="precision-info"></p>
+            </div>
         </div>
 
         <div id="map-container"></div>
@@ -49,6 +177,8 @@
             </ul>
             <p class="note">Bij onvolledige coördinaten wordt een box getoond waar de dorstige kippentjes zich kunnen bevinden.</p>
         </div>
+
+
     </div>
 
     <script src="script.js"></script>
