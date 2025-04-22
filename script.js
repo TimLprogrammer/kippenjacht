@@ -99,23 +99,60 @@ document.addEventListener('DOMContentLoaded', function() {
         visualizeCoordinates(latitudeInput, longitudeInput);
     });
 
+    // Initialiseer de invoervelden
+    const latitudeInput = document.getElementById('latitude');
+    const longitudeInput = document.getElementById('longitude');
+
+    // Sla de initiële waarden op
+    latitudeInput.oldValue = '';
+    longitudeInput.oldValue = '';
+
     // Luister naar input events om foutmeldingen te verbergen en automatisch punten toe te voegen
-    document.getElementById('latitude').addEventListener('input', function(e) {
+    latitudeInput.addEventListener('input', function(e) {
         updateInfo('', '');
         autoAddDecimalPoint(e.target);
     });
 
-    document.getElementById('longitude').addEventListener('input', function(e) {
+    longitudeInput.addEventListener('input', function(e) {
         updateInfo('', '');
         autoAddDecimalPoint(e.target);
     });
+
+    // Luister ook naar keydown events om backspace op de punt te detecteren
+    latitudeInput.addEventListener('keydown', handleKeyDown);
+    longitudeInput.addEventListener('keydown', handleKeyDown);
+
+    // Functie om backspace en delete toetsen te behandelen
+    function handleKeyDown(e) {
+        const input = e.target;
+        const cursorPosition = input.selectionStart;
+
+        // Markeer als de gebruiker backspace of delete indrukt bij een punt
+        if ((e.key === 'Backspace' && input.value.charAt(cursorPosition - 1) === '.') ||
+            (e.key === 'Delete' && input.value.charAt(cursorPosition) === '.')) {
+            input.isRemovingDecimal = true;
+        } else {
+            input.isRemovingDecimal = false;
+        }
+    };
 
     // Functie om automatisch een punt toe te voegen na het 2e cijfer
     function autoAddDecimalPoint(inputElement) {
         const value = inputElement.value;
+        const cursorPosition = inputElement.selectionStart;
 
         // Verwijder niet-numerieke tekens behalve punten
         let cleanValue = value.replace(/[^0-9.]/g, '');
+
+        // Sla de huidige bewerking over als de gebruiker de punt aan het verwijderen is
+        if (inputElement.isRemovingDecimal ||
+            (value.length < inputElement.oldValue?.length &&
+             inputElement.oldValue?.includes('.') && !value.includes('.'))) {
+            // Sta toe dat de punt wordt verwijderd
+            inputElement.oldValue = value;
+            inputElement.isRemovingDecimal = false;
+            return;
+        }
 
         // Als er al een punt is, zorg ervoor dat er maar één punt is
         if (cleanValue.includes('.')) {
@@ -127,10 +164,25 @@ document.addEventListener('DOMContentLoaded', function() {
             cleanValue = cleanValue.substring(0, 2) + '.' + cleanValue.substring(2);
         }
 
-        // Update de waarde alleen als deze is veranderd om de cursor niet te verstoren
+        // Bereken hoeveel tekens zijn toegevoegd/verwijderd om de cursor juist te plaatsen
+        const lengthDiff = cleanValue.length - value.length;
+
+        // Update de waarde alleen als deze is veranderd
         if (cleanValue !== value) {
             inputElement.value = cleanValue;
+
+            // Plaats de cursor op de juiste positie
+            // Als een punt is toegevoegd na de cursorpositie, verplaats de cursor voorbij de punt
+            if (cursorPosition >= 2 && cleanValue.charAt(2) === '.' && value.charAt(2) !== '.') {
+                inputElement.setSelectionRange(cursorPosition + 1, cursorPosition + 1);
+            } else {
+                // Anders behoud de cursor op dezelfde relatieve positie
+                inputElement.setSelectionRange(cursorPosition + lengthDiff, cursorPosition + lengthDiff);
+            }
         }
+
+        // Sla de huidige waarde op voor de volgende keer
+        inputElement.oldValue = cleanValue;
     }
 
     // Functie om coördinaten te visualiseren
@@ -436,10 +488,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update de voortgangsbalken
         updateProgress();
 
-        // Klap alle secties standaard in
+        // Klap alle secties standaard in, behalve de Regels-sectie
         const sectionHeaders = document.querySelectorAll('.section-header');
         sectionHeaders.forEach(header => {
-            toggleSection(header); // Klap in bij het laden van de pagina
+            // Controleer of dit de Regels-sectie is
+            const isRulesSection = header.querySelector('h2') && header.querySelector('h2').textContent.trim() === 'Regels';
+
+            // Als het niet de Regels-sectie is, klap deze dan in
+            if (!isRulesSection) {
+                toggleSection(header);
+            }
         });
     }
 
