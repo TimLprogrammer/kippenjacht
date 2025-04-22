@@ -52,12 +52,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Controleer of de waarden binnen geldige bereiken vallen
         if (lat !== null && (isNaN(lat) || lat < -90 || lat > 90)) {
-            updateInfo('Ongeldige breedtegraad. Moet tussen -90 en 90 liggen.', '');
+            updateInfo('Zo kan je de kippen nooit vinden, ongeldige breedtegraad. Moet tussen -90 en 90 liggen.', '');
             return;
         }
 
         if (lon !== null && (isNaN(lon) || lon < -180 || lon > 180)) {
-            updateInfo('Ongeldige lengtegraad. Moet tussen -180 en 180 liggen.', '');
+            updateInfo('Zo kan je de kippen nooit vinden, ongeldige lengtegraad. Moet tussen -180 en 180 liggen.', '');
             return;
         }
 
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             message = `Coördinaten: ${lat}, ${lon}`;
 
             if (latPrecision < 7 || lonPrecision < 7) {
-                precisionInfo = 'Onvolledige coördinaten gedetecteerd. Het gemarkeerde gebied toont alle mogelijke locaties waar de kippen zich kunnen bevinden.';
+                precisionInfo = 'Het gemarkeerde gebied toont alle mogelijke locaties waar de kippen zich kunnen bevinden.';
 
                 if (latPrecision < 7) {
                     precisionInfo += ` Breedtegraad bereik: ${latRange[0].toFixed(latPrecision)} tot ${latRange[1].toFixed(latPrecision)}.`;
