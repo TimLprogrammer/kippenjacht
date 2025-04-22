@@ -123,9 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Voeg een popup toe met informatie over het bereik
         const popupContent = `
             <div style="text-align: center;">
-                <h4 style="margin: 0 0 8px 0;">Mogelijk bereik voor 9-cijferige coördinaten</h4>
-                <p style="margin: 4px 0;">Breedtegraad: ${latRange[0].toFixed(latPrecision)} tot ${latRange[1].toFixed(latPrecision)}</p>
-                <p style="margin: 4px 0;">Lengtegraad: ${lonRange[0].toFixed(lonPrecision)} tot ${lonRange[1].toFixed(lonPrecision)}</p>
+                <h4 style="margin: 0 0 8px 0;">Het kippenterrein</h4>
             </div>
         `;
 
