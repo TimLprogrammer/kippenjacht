@@ -136,6 +136,13 @@ label {
     display: none;
 }
 
+/* Stijl voor de waarschuwingstekst */
+.warning-text {
+    color: #e74c3c;
+    font-style: italic;
+    font-weight: normal;
+}
+
 /* Consistente stijl voor alle kopjes */
 h1, h2, h3, h4, h5, h6, strong, .section-header h3, .progress-tracker h3 {
     color: #2c3e50;
