@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GPS Coördinaten Visualisatie - Preview</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="style.css">
+    <!-- Leaflet.js script moet vóór onze eigen script worden geladen -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FCC KIPPENJACHT 2025</h1>
+        </header>
+
+        <div class="checklist-container">
+            <div class="checklist-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>Regels</h2>
+                    <span class="toggle-icon">&#9660;</span>
+                </div>
+                <div class="section-content">
+                    <p>Jullie krijgen totaal 18 opdrachten (9 voor de breedtegraad en 9 voor de lengtegraad). Kies strategisch welke opdracht jullie gaan uitvoeren.
+                        Voor elke opdracht krijgen jullie 1 getal (op de juiste volgorde van de breedtegraad of lengtegraad). Hier zitten de kippen te zuipen van jullie geld! <br><br>
+                        Voer de opdrachten uit en stuur het bewijs naar de kippen, bij goedkeuring delen zij steeds de juiste getallen.<br><br>
+                        Vul steeds de coördinaten in om het gebied te vinden waar de kippen zich bevinden. Bij elk getal dat jullie invullen wordt het gebied kleiner. <br><br>
+                        Willen jullie een kroeg gokken? Dan mag dat, maar elke fout wordt gestraft met een adtje (per team) bij de kroeg zelf. Tweede keer gokken wordt 2 adtjes etc. <br><br> Succes kippenjagers <br><br><span class="warning-text">Het gokken kunnen wij natuurlijk niet controleren maar valsspelen is gewoon zeer gay.</span></p>
+                </div>
+            </div>
+
+            <div class="section-header" style="cursor: default; margin-top: 20px;">
+                <h2>Opdrachten</h2>
+            </div>
+
+            <div class="checklist-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Breedtegraad</h3>
+                    <span class="toggle-icon">&#9660;</span>
+                </div>
+                <div class="section-content">
+                    <div class="special-task">
+                        <input type="checkbox" id="lat-special" class="task-checkbox">
+                        <label for="lat-special"><strong>Special voor 2 coördinaten:</strong> Hier komt een opdracht</label>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-1" class="task-checkbox">
+                            <label for="lat-task-1">1. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-2" class="task-checkbox">
+                            <label for="lat-task-2">2. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-3" class="task-checkbox">
+                            <label for="lat-task-3">3. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-4" class="task-checkbox">
+                            <label for="lat-task-4">4. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-5" class="task-checkbox">
+                            <label for="lat-task-5">5. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-6" class="task-checkbox">
+                            <label for="lat-task-6">6. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-7" class="task-checkbox">
+                            <label for="lat-task-7">7. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-8" class="task-checkbox">
+                            <label for="lat-task-8">8. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lat-task-9" class="task-checkbox">
+                            <label for="lat-task-9">9. Hier komt een opdracht</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Lengtegraad</h3>
+                    <span class="toggle-icon">&#9660;</span>
+                </div>
+                <div class="section-content">
+                    <div class="special-task">
+                        <input type="checkbox" id="lon-special" class="task-checkbox">
+                        <label for="lon-special"><strong>Special voor 2 coördinaten:</strong> Hier komt een opdracht</label>
+                    </div>
+                    <div class="task-list">
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-1" class="task-checkbox">
+                            <label for="lon-task-1">1. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-2" class="task-checkbox">
+                            <label for="lon-task-2">2. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-3" class="task-checkbox">
+                            <label for="lon-task-3">3. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-4" class="task-checkbox">
+                            <label for="lon-task-4">4. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-5" class="task-checkbox">
+                            <label for="lon-task-5">5. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-6" class="task-checkbox">
+                            <label for="lon-task-6">6. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-7" class="task-checkbox">
+                            <label for="lon-task-7">7. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-8" class="task-checkbox">
+                            <label for="lon-task-8">8. Hier komt een opdracht</label>
+                        </div>
+                        <div class="task-item">
+                            <input type="checkbox" id="lon-task-9" class="task-checkbox">
+                            <label for="lon-task-9">9. Hier komt een opdracht</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-tracker">
+                <h3>Voortgang:</h3>
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <span>Breedtegraad: </span>
+                        <div class="progress-bar">
+                            <div id="lat-progress" class="progress-fill"></div>
+                        </div>
+                        <span id="lat-count">0/9</span>
+                    </div>
+                    <div class="progress-item">
+                        <span>Lengtegraad: </span>
+                        <div class="progress-bar">
+                            <div id="lon-progress" class="progress-fill"></div>
+                        </div>
+                        <span id="lon-count">0/9</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="coordinate-form">
+            <form id="gpsForm">
+                <div class="form-group">
+                    <label for="latitude">Breedtegraad:</label>
+                    <input type="tel" id="latitude" name="latitude" placeholder="bijv. 50.0864306" autocomplete="off" pattern="[0-9.]*" inputmode="decimal">
+                </div>
+                <div class="form-group">
+                    <label for="longitude">Lengtegraad:</label>
+                    <input type="tel" id="longitude" name="longitude" placeholder="bijv. 14.4201537" autocomplete="off" pattern="[0-9.]*" inputmode="decimal">
+                </div>
+                <button type="submit" id="visualize-btn">Zoek de kip!</button>
+            </form>
+            <div id="error-container" class="error-message">
+                <p id="coordinate-info"></p>
+                <p id="precision-info"></p>
+            </div>
+        </div>
+
+        <div id="map-container"></div>
+
+        <div class="examples">
+            <h3>Voorbeelden:</h3>
+            <ul>
+                <li><strong>Volledig (9 cijfers):</strong> Breedtegraad: 50.0864306, Lengtegraad: 14.4201537</li>
+                <li><strong>Gedeeltelijk:</strong> Breedtegraad: 50.086, Lengtegraad: 14.420</li>
+                <li><strong>Alleen breedtegraad:</strong> Breedtegraad: 50.0864306</li>
+            </ul>
+            <p class="note">Bij onvolledige coördinaten wordt een box getoond waar de dorstige kippentjes zich kunnen bevinden.</p>
+        </div>
+
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
