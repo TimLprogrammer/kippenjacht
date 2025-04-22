@@ -99,23 +99,42 @@ document.addEventListener('DOMContentLoaded', function() {
         visualizeCoordinates(latitudeInput, longitudeInput);
     });
 
-    // Luister naar input events om foutmeldingen te verbergen wanneer de gebruiker begint te typen
-    document.getElementById('latitude').addEventListener('input', function() {
+    // Luister naar input events om foutmeldingen te verbergen en automatisch punten toe te voegen
+    document.getElementById('latitude').addEventListener('input', function(e) {
         updateInfo('', '');
+        autoAddDecimalPoint(e.target);
     });
 
-    document.getElementById('longitude').addEventListener('input', function() {
+    document.getElementById('longitude').addEventListener('input', function(e) {
         updateInfo('', '');
+        autoAddDecimalPoint(e.target);
     });
+
+    // Functie om automatisch een punt toe te voegen na het 2e cijfer
+    function autoAddDecimalPoint(inputElement) {
+        const value = inputElement.value;
+
+        // Verwijder niet-numerieke tekens behalve punten
+        let cleanValue = value.replace(/[^0-9.]/g, '');
+
+        // Als er al een punt is, zorg ervoor dat er maar één punt is
+        if (cleanValue.includes('.')) {
+            const parts = cleanValue.split('.');
+            cleanValue = parts[0] + '.' + parts.slice(1).join('');
+        }
+        // Als er nog geen punt is en er zijn minstens 2 cijfers, voeg een punt toe na het 2e cijfer
+        else if (cleanValue.length >= 2 && !cleanValue.includes('.')) {
+            cleanValue = cleanValue.substring(0, 2) + '.' + cleanValue.substring(2);
+        }
+
+        // Update de waarde alleen als deze is veranderd om de cursor niet te verstoren
+        if (cleanValue !== value) {
+            inputElement.value = cleanValue;
+        }
+    }
 
     // Functie om coördinaten te visualiseren
     function visualizeCoordinates(latitudeInput, longitudeInput) {
-        // Controleer of er een decimaalpunt is gebruikt in de invoer
-        if ((latitudeInput && !latitudeInput.includes('.')) || (longitudeInput && !longitudeInput.includes('.'))) {
-            updateInfo('Waarschuwing: Je hebt geen decimaalpunt gebruikt in je coördinaten. Gebruik bijvoorbeeld 50.08 in plaats van 5008.', '');
-            return;
-        }
-
         // Bepaal de precisie van de ingevoerde coördinaten
         const latPrecision = getPrecision(latitudeInput);
         const lonPrecision = getPrecision(longitudeInput);
