@@ -338,12 +338,63 @@ strong {
     border-color: #eee;
 }
 
+/* Aangepaste checkbox stijl */
 .task-checkbox {
-    margin-right: 12px;
-    margin-top: 3px;
-    transform: scale(1.2);
-    accent-color: #3498db;
-    vertical-align: top;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.task-item label, .special-task label {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1.4;
+}
+
+.task-item label:before, .special-task label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #3498db;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.task-item label:after, .special-task label:after {
+    content: '\2714';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    font-size: 14px;
+    color: white;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.task-checkbox:checked + label:before {
+    background: #3498db;
+}
+
+.task-checkbox:checked + label:after {
+    opacity: 1;
+}
+
+.task-checkbox:focus + label:before {
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+/* Hover effect */
+.task-item:hover label:before, .special-task:hover label:before {
+    border-color: #2980b9;
 }
 
 .task-item label {
@@ -394,7 +445,8 @@ strong {
 /* Completed task styling */
 .task-checkbox:checked + label {
     text-decoration: line-through;
-    color: #7f8c8d;
+    color: #95a5a6;
+    transition: all 0.3s ease;
 }
 
 /* Stijl wordt nu gedefinieerd in de algemene kopjes-stijl hierboven */
@@ -558,14 +610,54 @@ strong {
     /* Verbeterde formulierstijl op mobiel */
     .coordinate-form {
         padding: 15px;
+        margin-bottom: 15px;
     }
 
     .form-group {
         margin-bottom: 12px;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="tel"] {
+        font-size: 16px; /* 16px voorkomt inzoomen op iOS */
+        padding: 10px 12px;
+        -webkit-appearance: none; /* Voorkomt standaard iOS styling */
+        appearance: none;
+    }
+
+    button {
+        padding: 12px 20px;
         font-size: 15px;
-        padding: 8px;
+    }
+
+    /* Verbeterde checkbox stijl op mobiel */
+    .task-item label, .special-task label {
+        padding-left: 30px;
+        font-size: 15px;
+    }
+
+    .task-item label:before, .special-task label:before {
+        width: 20px;
+        height: 20px;
+    }
+
+    .task-item label:after, .special-task label:after {
+        left: 5px;
+        top: 2px;
+        font-size: 12px;
+    }
+
+    /* Verbeterde touch target sizes voor mobiel */
+    .task-item, .special-task {
+        padding: 12px 8px;
+        margin-bottom: 2px;
+    }
+
+    /* Verbeterde sectie headers voor mobiel */
+    .section-header {
+        padding: 10px 12px;
+    }
+
+    .section-content {
+        padding: 12px;
     }
 }
