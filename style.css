@@ -1,0 +1,663 @@
+/* Reset en basis stijlen */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+/* Formulier stijlen */
+.coordinate-form {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    border: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+.form-group {
+    margin-bottom: 18px;
+    position: relative;
+}
+
+.form-group label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #2c3e50;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* Verwijderd omdat de label boven de input staat, niet eronder */
+
+/* Deze stijl is nu verplaatst naar de algemene label-stijl */
+
+input[type="text"], input[type="tel"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+input[type="text"]:focus, input[type="tel"]:focus {
+    border-color: #3498db;
+    box-shadow: 0 2px 10px rgba(52, 152, 219, 0.2);
+    outline: none;
+    background-color: #fff;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 14px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    width: 100%;
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+button:hover {
+    background-color: #2980b9;
+    box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(41, 128, 185, 0.4);
+}
+
+/* Consistente stijl voor formulier-elementen */
+label {
+    font-weight: 600;
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Kaart container */
+#map-container {
+    height: 650px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    margin-bottom: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+/* Moderne overlay voor de kaart */
+#map-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    z-index: 1000;
+}
+
+/* Informatie paneel */
+.info-panel, .checklist-container {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Stijl voor de foutmelding */
+.error-message {
+    margin-top: 15px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+}
+
+.error-message.visible {
+    max-height: 200px; /* Verhoogd om meer ruimte te geven voor de tekst */
+}
+
+#coordinate-info {
+    display: block;
+    color: #e57373; /* Lichtrode kleur */
+    font-style: italic; /* Schuingedrukt */
+    font-weight: normal;
+    padding: 10px;
+    background-color: #ffebee; /* Zeer lichte rode achtergrond */
+    border-left: 4px solid #e57373;
+    border-radius: 4px;
+    margin: 0;
+    line-height: 1.5; /* Verbeterde regelafstand voor betere leesbaarheid */
+    word-wrap: break-word; /* Zorgt ervoor dat lange woorden worden afgebroken */
+    hyphens: auto; /* Voegt automatisch afbreekstreepjes toe indien nodig */
+}
+
+#precision-info {
+    display: none;
+}
+
+/* Stijl voor de waarschuwingstekst */
+.warning-text {
+    color: #e74c3c;
+    font-style: italic;
+    font-weight: normal;
+}
+
+/* Consistente stijl voor alle kopjes */
+h1, h2, h3, h4, h5, h6, strong, .section-header h3, .progress-tracker h3 {
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+h2, .checklist-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+h3, .info-panel h3, .section-header h3, .progress-tracker h3, .examples h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+strong {
+    font-weight: 600;
+}
+
+/* Voorbeelden sectie */
+.examples {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.examples .note {
+    margin-top: 10px;
+    font-style: italic;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Checklist stijlen */
+.checklist-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+/* Deze stijl is nu verplaatst naar de algemene kopjes-stijl hierboven */
+
+.checklist-section {
+    margin-bottom: 25px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.section-header {
+    background-color: white;
+    padding: 12px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #eee;
+}
+
+.section-header:hover {
+    background-color: #f9f9f9;
+}
+
+.section-header h3 {
+    color: #2c3e50;
+    margin: 0;
+}
+
+.section-header .toggle-icon {
+    font-size: 20px;
+    transition: transform 0.3s;
+}
+
+.section-header.collapsed .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.section-content {
+    padding: 15px;
+    display: block;
+    transition: max-height 0.3s ease-out;
+    max-height: 1000px;
+    overflow: hidden;
+}
+
+.section-content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.special-task {
+    background-color: #f0f7fc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #3498db;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+}
+
+.special-task::after {
+    content: '★';
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: rgba(52, 152, 219, 0.15);
+    font-size: 24px;
+}
+
+.special-task label {
+    color: #2980b9;
+    display: inline-block;
+    width: 90%;
+    margin-bottom: 0;
+}
+
+.special-task strong {
+    color: #2980b9;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.task-item:hover {
+    background-color: #f9f9f9;
+    border-color: #eee;
+}
+
+/* Aangepaste checkbox stijl */
+.task-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.task-item label, .special-task label {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 1.4;
+}
+
+.task-item label:before, .special-task label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #3498db;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.task-item label:after, .special-task label:after {
+    content: '\2714';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    font-size: 14px;
+    color: white;
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+.task-checkbox:checked + label:before {
+    background: #3498db;
+}
+
+.task-checkbox:checked + label:after {
+    opacity: 1;
+}
+
+.task-checkbox:focus + label:before {
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+/* Hover effect */
+.task-item:hover label:before, .special-task:hover label:before {
+    border-color: #2980b9;
+}
+
+.task-item label {
+    cursor: pointer;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+/* Voortgangsbalk */
+.progress-tracker {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px dashed #eee;
+}
+
+.progress-tracker h3 {
+    margin-bottom: 15px;
+}
+
+.progress-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 20px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #2ecc71;
+    transition: width 0.3s ease;
+}
+
+/* Completed task styling */
+.task-checkbox:checked + label {
+    text-decoration: line-through;
+    color: #95a5a6;
+    transition: all 0.3s ease;
+}
+
+/* Stijl wordt nu gedefinieerd in de algemene kopjes-stijl hierboven */
+
+.examples ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+.examples li {
+    margin-bottom: 8px;
+}
+
+/* Moderne kaart stijlen */
+.chicken-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.3);
+    border: 2px solid #3498db;
+    animation: pulse 2s infinite;
+}
+
+.chicken-marker span {
+    font-size: 24px;
+    margin-top: -5px;
+}
+
+/* Stijl voor de kip in het gebied */
+.area-chicken {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #e74c3c;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Moderne popup stijlen */
+.modern-popup-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+    border: none;
+}
+
+.modern-popup-container .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.modern-popup-container .leaflet-popup-content {
+    margin: 0;
+    width: 100% !important;
+}
+
+.modern-popup-container .leaflet-popup-tip {
+    background-color: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modern-popup {
+    padding: 15px;
+    background-color: white;
+    text-align: center;
+}
+
+.modern-popup h4 {
+    margin: 0 0 8px 0;
+    color: #3498db;
+    font-size: 16px;
+}
+
+.modern-popup p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Leaflet controls styling */
+.leaflet-control-zoom {
+    border-radius: 8px !important;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
+}
+
+.leaflet-control-zoom a {
+    background-color: white !important;
+    color: #3498db !important;
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #f8f8f8 !important;
+    color: #2980b9 !important;
+}
+
+.leaflet-control-attribution {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    padding: 4px 8px !important;
+    border-radius: 4px 0 0 0 !important;
+    font-size: 11px !important;
+}
+
+.leaflet-control-scale {
+    margin-bottom: 10px !important;
+}
+
+/* Responsieve aanpassingen */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    #map-container {
+        height: 450px;
+    }
+
+    /* Verbeterde stijl voor foutmeldingen op mobiel */
+    .error-message.visible {
+        max-height: 300px; /* Nog meer ruimte op mobiel */
+    }
+
+    #coordinate-info {
+        font-size: 14px; /* Iets kleinere tekst op mobiel */
+        padding: 8px;
+        line-height: 1.4;
+    }
+
+    /* Verbeterde formulierstijl op mobiel */
+    .coordinate-form {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    input[type="text"], input[type="tel"] {
+        font-size: 16px; /* 16px voorkomt inzoomen op iOS */
+        padding: 10px 12px;
+        -webkit-appearance: none; /* Voorkomt standaard iOS styling */
+        appearance: none;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    /* Verbeterde checkbox stijl op mobiel */
+    .task-item label, .special-task label {
+        padding-left: 30px;
+        font-size: 15px;
+    }
+
+    .task-item label:before, .special-task label:before {
+        width: 20px;
+        height: 20px;
+    }
+
+    .task-item label:after, .special-task label:after {
+        left: 5px;
+        top: 2px;
+        font-size: 12px;
+    }
+
+    /* Verbeterde touch target sizes voor mobiel */
+    .task-item, .special-task {
+        padding: 12px 8px;
+        margin-bottom: 2px;
+    }
+
+    /* Verbeterde sectie headers voor mobiel */
+    .section-header {
+        padding: 10px 12px;
+    }
+
+    .section-content {
+        padding: 12px;
+    }
+}
