@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Voeg een popup toe met informatie over het bereik
         const popupContent = `
             <div style="text-align: center;">
-                <h4 style="margin: 0 0 8px 0;">Het kippenterrein</h4>
+                <h4 style="margin: 0 0 8px 0;">Het kippenhok</h4>
             </div>
         `;
 
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
             message = `Coördinaten: ${lat}, ${lon}`;
 
             if (latPrecision < 7 || lonPrecision < 7) {
-                precisionInfo = 'Onvolledige coördinaten gedetecteerd. Het gemarkeerde gebied toont alle mogelijke locaties waar de exacte 9-cijferige coördinaten zich kunnen bevinden.';
+                precisionInfo = 'Onvolledige coördinaten gedetecteerd. Het gemarkeerde gebied toont alle mogelijke locaties waar de kippen zich kunnen bevinden.';
 
                 if (latPrecision < 7) {
                     precisionInfo += ` Breedtegraad bereik: ${latRange[0].toFixed(latPrecision)} tot ${latRange[1].toFixed(latPrecision)}.`;
@@ -226,14 +226,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     precisionInfo += ` Lengtegraad bereik: ${lonRange[0].toFixed(lonPrecision)} tot ${lonRange[1].toFixed(lonPrecision)}.`;
                 }
             } else {
-                precisionInfo = 'Volledige coördinaten gedetecteerd. De marker toont de exacte locatie.';
+                precisionInfo = 'Volledige coördinaten gedetecteerd. De kippen zullen hier zijn.';
             }
         } else if (lat !== null) {
             message = `Breedtegraad: ${lat}`;
-            precisionInfo = 'Alleen breedtegraad ingevoerd. De rode lijn toont alle locaties met deze breedtegraad.';
+            precisionInfo = 'Alleen breedtegraad ingevoerd. De kippen bevinden zich op deze lijn.';
         } else if (lon !== null) {
             message = `Lengtegraad: ${lon}`;
-            precisionInfo = 'Alleen lengtegraad ingevoerd. De groene lijn toont alle locaties met deze lengtegraad.';
+            precisionInfo = 'Alleen lengtegraad ingevoerd. De kippen bevinden zich op deze lijn.';
         }
 
         updateInfo(message, precisionInfo);
