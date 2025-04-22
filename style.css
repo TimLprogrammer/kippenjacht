@@ -136,13 +136,11 @@ label {
     z-index: 1000;
 }
 
-/* Informatie paneel */
-.info-panel, .checklist-container {
-    background-color: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+/* Stijl voor de sectie-inhoud */
+.section-content p {
+    margin: 0;
+    line-height: 1.5;
+    padding: 5px 0;
 }
 
 /* Stijl voor de foutmelding */
@@ -257,9 +255,10 @@ strong {
     background-color: #f9f9f9;
 }
 
-.section-header h3 {
+.section-header h3, .section-header h2 {
     color: #2c3e50;
     margin: 0;
+    font-size: 20px;
 }
 
 .section-header .toggle-icon {
