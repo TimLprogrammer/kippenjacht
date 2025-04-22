@@ -41,11 +41,7 @@ h1 {
     margin-bottom: 15px;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-}
+/* Deze stijl is nu verplaatst naar de algemene label-stijl */
 
 input[type="text"] {
     width: 100%;
@@ -71,17 +67,41 @@ button:hover {
     background-color: #2980b9;
 }
 
+/* Consistente stijl voor formulier-elementen */
+label {
+    font-weight: 600;
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 5px;
+}
+
 /* Kaart container */
 #map-container {
     height: 650px;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    margin-bottom: 30px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+/* Moderne overlay voor de kaart */
+#map-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    z-index: 1000;
 }
 
 /* Informatie paneel */
-.info-panel {
+.info-panel, .checklist-container {
     background-color: white;
     padding: 15px;
     border-radius: 8px;
@@ -89,9 +109,56 @@ button:hover {
     margin-bottom: 20px;
 }
 
-.info-panel h3 {
-    margin-bottom: 10px;
+/* Stijl voor de foutmelding */
+.error-message {
+    margin-top: 15px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+}
+
+.error-message.visible {
+    max-height: 100px;
+}
+
+#coordinate-info {
+    display: block;
+    color: #e74c3c;
+    font-weight: bold;
+    padding: 10px;
+    background-color: #fef2f2;
+    border-left: 4px solid #e74c3c;
+    border-radius: 4px;
+    margin: 0;
+}
+
+#precision-info {
+    display: none;
+}
+
+/* Consistente stijl voor alle kopjes */
+h1, h2, h3, h4, h5, h6, strong, .section-header h3, .progress-tracker h3 {
     color: #2c3e50;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+h2, .checklist-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+h3, .info-panel h3, .section-header h3, .progress-tracker h3, .examples h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+strong {
+    font-weight: 600;
 }
 
 /* Voorbeelden sectie */
@@ -100,6 +167,7 @@ button:hover {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .examples .note {
@@ -109,10 +177,180 @@ button:hover {
     font-size: 0.9em;
 }
 
-.examples h3 {
-    margin-bottom: 10px;
-    color: #2c3e50;
+/* Checklist stijlen */
+.checklist-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
 }
+
+/* Deze stijl is nu verplaatst naar de algemene kopjes-stijl hierboven */
+
+.checklist-section {
+    margin-bottom: 25px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.section-header {
+    background-color: white;
+    padding: 12px 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #eee;
+}
+
+.section-header:hover {
+    background-color: #f9f9f9;
+}
+
+.section-header h3 {
+    color: #2c3e50;
+    margin: 0;
+}
+
+.section-header .toggle-icon {
+    font-size: 20px;
+    transition: transform 0.3s;
+}
+
+.section-header.collapsed .toggle-icon {
+    transform: rotate(-90deg);
+}
+
+.section-content {
+    padding: 15px;
+    display: block;
+    transition: max-height 0.3s ease-out;
+    max-height: 1000px;
+    overflow: hidden;
+}
+
+.section-content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.special-task {
+    background-color: #f0f7fc;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid #3498db;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+}
+
+.special-task::after {
+    content: '★';
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: rgba(52, 152, 219, 0.15);
+    font-size: 24px;
+}
+
+.special-task label {
+    color: #2980b9;
+    display: inline-block;
+    width: 90%;
+    margin-bottom: 0;
+}
+
+.special-task strong {
+    color: #2980b9;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.task-item:hover {
+    background-color: #f9f9f9;
+    border-color: #eee;
+}
+
+.task-checkbox {
+    margin-right: 12px;
+    margin-top: 3px;
+    transform: scale(1.2);
+    accent-color: #3498db;
+    vertical-align: top;
+}
+
+.task-item label {
+    cursor: pointer;
+    font-weight: normal;
+    line-height: 1.4;
+    margin-bottom: 0;
+}
+
+/* Voortgangsbalk */
+.progress-tracker {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px dashed #eee;
+}
+
+.progress-tracker h3 {
+    margin-bottom: 15px;
+}
+
+.progress-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.progress-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 20px;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #2ecc71;
+    transition: width 0.3s ease;
+}
+
+/* Completed task styling */
+.task-checkbox:checked + label {
+    text-decoration: line-through;
+    color: #7f8c8d;
+}
+
+/* Stijl wordt nu gedefinieerd in de algemene kopjes-stijl hierboven */
 
 .examples ul {
     list-style-type: none;
@@ -121,6 +359,132 @@ button:hover {
 
 .examples li {
     margin-bottom: 8px;
+}
+
+/* Moderne kaart stijlen */
+.chicken-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.3);
+    border: 2px solid #3498db;
+    animation: pulse 2s infinite;
+}
+
+.chicken-marker span {
+    font-size: 24px;
+    margin-top: -5px;
+}
+
+/* Stijl voor de kip in het gebied */
+.area-chicken {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px solid #e74c3c;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 5px 18px rgba(0, 0, 0, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 3px 14px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Moderne popup stijlen */
+.modern-popup-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+    border: none;
+}
+
+.modern-popup-container .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.modern-popup-container .leaflet-popup-content {
+    margin: 0;
+    width: 100% !important;
+}
+
+.modern-popup-container .leaflet-popup-tip {
+    background-color: white;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+}
+
+.modern-popup {
+    padding: 15px;
+    background-color: white;
+    text-align: center;
+}
+
+.modern-popup h4 {
+    margin: 0 0 8px 0;
+    color: #3498db;
+    font-size: 16px;
+}
+
+.modern-popup p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Leaflet controls styling */
+.leaflet-control-zoom {
+    border-radius: 8px !important;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
+}
+
+.leaflet-control-zoom a {
+    background-color: white !important;
+    color: #3498db !important;
+    width: 36px !important;
+    height: 36px !important;
+    line-height: 36px !important;
+    font-size: 18px !important;
+    font-weight: bold !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background-color: #f8f8f8 !important;
+    color: #2980b9 !important;
+}
+
+.leaflet-control-attribution {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    padding: 4px 8px !important;
+    border-radius: 4px 0 0 0 !important;
+    font-size: 11px !important;
+}
+
+.leaflet-control-scale {
+    margin-bottom: 10px !important;
 }
 
 /* Responsieve aanpassingen */
